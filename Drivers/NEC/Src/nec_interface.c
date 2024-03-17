@@ -42,6 +42,8 @@ void NEC_Dev_Initialize(void)
 
 	nec_dev.p_gpio_handle = nec_gpio_handle;
 	nec_dev.state = NEC_STATE_IDLE;
+
+	HAL_TIM_Base_Start_IT(&NEC_TIME_SOURCE);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)

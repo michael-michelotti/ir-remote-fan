@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <inttypes.h>
 
+extern TIM_HandleTypeDef htim3;
+#define NEC_TIME_SOURCE					htim3
+
 #define NEC_GPIO_PIN					NEC_IN_Pin
 #define NEC_GPIO_MODE					GPIO_MODE_IT_RISING_FALLING
 #define NEC_GPIO_PULL					GPIO_NOPULL

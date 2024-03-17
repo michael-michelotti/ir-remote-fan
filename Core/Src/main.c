@@ -22,7 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "l293d_driver.h"
-#include "nec_interface.h"
+#include "remote.h"
 
 /* USER CODE END Includes */
 
@@ -50,7 +50,7 @@ TIM_HandleTypeDef htim5;
 L293D_Handle_t l293d;
 HAL_GPIO_Handle_t en_gpio_handle;
 
-NEC_Device_t nec_dev;
+Remote_Device_t remote;
 
 /* USER CODE END PV */
 
@@ -66,6 +66,18 @@ static void MX_TIM3_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void Remote_Key_Press_Callback(char_code_t pressed_char)
+{
+	remote.last_char_code = pressed_char;
+	remote.last_char_str = Remote_Decode_Char_Code(remote.last_char_code);
+	printf("Pressed char: %s\n", remote.last_char_str);
+}
+
+void Remote_Key_Hold_Callback()
+{
+	printf("Held char: %s\n", remote.last_char_str);
+}
 
 /* USER CODE END 0 */
 
@@ -122,10 +134,9 @@ int main(void)
   L293D_Disable(&l293d);
   */
 
-  NEC_Dev_Initialize();
-  HAL_TIM_Base_Start_IT(&htim3);
-
+  Remote_Listen(&remote);
   /* USER CODE END 2 */
+
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
