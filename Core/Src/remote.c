@@ -1,7 +1,8 @@
 #include "remote.h"
 
+NEC_Device_t nec;
 
-/* Remote will be utilizing my NEC driver through these callbacks */
+/**** Remote will be utilizing my NEC driver through these callbacks ****/
 void NEC_Full_Frame_Received_Callback(NEC_Device_t *p_nec_dev)
 {
 	/* Extract character code from frame */
@@ -18,12 +19,20 @@ void NEC_Decode_Error_Callback(NEC_Device_t *p_nec_dev)
 {
 	/* Don't want to do anything on decode errors for now. */
 	/* Could just mean remote was turned away from receiver mid-frame. */
+	printf("frame decode error\n");
+}
+
+/* In order to utilize the NEC interface, you must pass the NEC device to
+ * the NEC interface each time an edge is detected on the NEC input pin. */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	NEC_Edge_Detected_Callback(&nec);
 }
 
 void Remote_Listen(Remote_Device_t *remote)
 {
 	remote->state = REMOTE_STATE_INIT;
-	NEC_Dev_Initialize();
+	NEC_Dev_Initialize(&nec);
 	remote->state = REMOTE_STATE_IDLE;
 }
 
@@ -52,8 +61,8 @@ const char *Remote_Decode_Char_Code(char_code_t char_to_decode)
 	case CHAR_CODE_8: return "8";
 	case CHAR_CODE_6: return "6";
 	case CHAR_CODE_3: return "3";
-
 	}
+	return "ERR";
 }
 
 __weak void Remote_Key_Press_Callback(char_code_t pressed_char)

@@ -1,8 +1,9 @@
 #include "nec_interface.h"
 
-static NEC_Device_t nec_dev;
+/* Private counter variable for NEC devices - counts in us. */
+/* Triggers off TIM3, which is configured to produce an interrupt every 10us. */
 uint64_t us_ticks;
-uint8_t frame_num;
+
 
 static uint32_t NEC_Decode(NEC_Device_t *p_nec_dev);
 
@@ -25,25 +26,14 @@ __weak void NEC_Decode_Error_Callback(NEC_Device_t *p_nec_dev)
 	printf("Error decoding frame.");
 }
 
-void NEC_Dev_Initialize(void)
+void NEC_Dev_Initialize(NEC_Device_t *p_nec_dev)
 {
-	nec_dev.num_edges = -1;
-	GPIO_InitTypeDef nec_gpio_init;
-	nec_gpio_init.Pin = NEC_GPIO_PIN;
-	nec_gpio_init.Mode = NEC_GPIO_MODE;
-	nec_gpio_init.Pull = NEC_GPIO_PULL;
-	nec_gpio_init.Speed = NEC_GPIO_SPEED;
-
-	HAL_GPIO_Handle_t nec_gpio_handle = {
-			.gpio_init_typedef = nec_gpio_init,
-			.curr_gpio_state = GPIO_PIN_RESET,
-			.gpio_typedef = NEC_GPIO_PORT
-	};
-
-	nec_dev.p_gpio_handle = nec_gpio_handle;
-	nec_dev.state = NEC_STATE_IDLE;
-
+	p_nec_dev->state = NEC_STATE_INIT;
+	p_nec_dev->num_edges = -1;
+	p_nec_dev->gpio_pin_num = NEC_GPIO_PIN;
+	p_nec_dev->gpio_port = NEC_GPIO_PORT;
 	HAL_TIM_Base_Start_IT(&NEC_TIME_SOURCE);
+	p_nec_dev->state = NEC_STATE_IDLE;
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -51,84 +41,83 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	us_ticks += 10;
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void NEC_Edge_Detected_Callback(NEC_Device_t *p_nec_dev)
 {
 	uint32_t second_preamble_pulse;
-
-	switch (nec_dev.state)
+	switch (p_nec_dev->state)
 	{
 		case NEC_STATE_IDLE:
-			nec_dev.timestamp = us_ticks = 0;
-			nec_dev.preamble_edges[0].ts = us_ticks;
-			nec_dev.num_edges = 1;
-			nec_dev.state = NEC_STATE_PREAMBLE;
+			p_nec_dev->timestamp = us_ticks = 0;
+			p_nec_dev->preamble_edges[0].ts = us_ticks;
+			p_nec_dev->num_edges = 1;
+			p_nec_dev->state = NEC_STATE_PREAMBLE;
 			break;
 
 		case NEC_STATE_PREAMBLE:
-			if (nec_dev.num_edges == 1)
+			if (p_nec_dev->num_edges == 1)
 			{
-				nec_dev.preamble_edges[1].ts = us_ticks - nec_dev.timestamp;
-				nec_dev.timestamp = us_ticks;
-				nec_dev.num_edges += 1;
+				p_nec_dev->preamble_edges[1].ts = us_ticks - p_nec_dev->timestamp;
+				p_nec_dev->timestamp = us_ticks;
+				p_nec_dev->num_edges += 1;
 			}
-			else if (nec_dev.num_edges == 2)
+			else if (p_nec_dev->num_edges == 2)
 			{
-				nec_dev.preamble_edges[2].ts = second_preamble_pulse = us_ticks - nec_dev.timestamp;
-				nec_dev.timestamp = us_ticks;
+				p_nec_dev->preamble_edges[2].ts = second_preamble_pulse = us_ticks - p_nec_dev->timestamp;
+				p_nec_dev->timestamp = us_ticks;
 
 				if ((second_preamble_pulse > NEC_HOLD_FRAME_MIN) &&
 						(second_preamble_pulse < NEC_HOLD_FRAME_MAX))
 				{
 					/* This is a hold frame */
-					nec_dev.num_edges += 1;
+					p_nec_dev->num_edges += 1;
 				}
 				else if ((second_preamble_pulse > NEC_FULL_FRAME_MIN) &&
 						(second_preamble_pulse < NEC_FULL_FRAME_MAX))
 				{
 					/* This is a full frame */
-					nec_dev.num_edges = 0;
-					nec_dev.state = NEC_STATE_DATA;
+					p_nec_dev->num_edges = 0;
+					p_nec_dev->state = NEC_STATE_DATA;
 				}
 				else
 				{
 					/* Preamble decode failed, reset state */
-					nec_dev.num_edges = -1;
-					nec_dev.state = NEC_STATE_IDLE;
-					NEC_Decode_Error_Callback(&nec_dev);
+					p_nec_dev->num_edges = -1;
+					p_nec_dev->state = NEC_STATE_IDLE;
+					NEC_Decode_Error_Callback(p_nec_dev);
 				}
 			}
-			else if (nec_dev.num_edges == 3)
+			else if (p_nec_dev->num_edges == 3)
 			{
 				/* We only get here in a hold frame */
-				nec_dev.num_edges = -1;
-				nec_dev.state = NEC_STATE_IDLE;
-				NEC_Hold_Frame_Received_Callback(&nec_dev);
+				p_nec_dev->num_edges = -1;
+				p_nec_dev->state = NEC_STATE_IDLE;
+				NEC_Hold_Frame_Received_Callback(p_nec_dev);
 			}
 			break;
 
 		case NEC_STATE_DATA:
-			if (nec_dev.num_edges >= NEC_EDGES_PER_READ - 1)
+			if (p_nec_dev->num_edges >= NEC_EDGES_PER_READ - 1)
 			{
 				/* Read complete, enter decode logic */
-				nec_dev.last_frame = NEC_Decode(&nec_dev);
-				nec_dev.state = NEC_STATE_IDLE;
-				nec_dev.num_edges = -1;
+				p_nec_dev->last_frame = NEC_Decode(p_nec_dev);
+				p_nec_dev->state = NEC_STATE_IDLE;
+				p_nec_dev->num_edges = -1;
 
-				if (nec_dev.last_frame == NEC_FRAME_DECODE_ERROR)
+				if (p_nec_dev->last_frame == NEC_FRAME_DECODE_ERROR)
 				{
-					NEC_Decode_Error_Callback(&nec_dev);
+					NEC_Decode_Error_Callback(p_nec_dev);
 				}
 				else
 				{
-					NEC_Full_Frame_Received_Callback(&nec_dev);
+					NEC_Full_Frame_Received_Callback(p_nec_dev);
 				}
 			}
 			else
 			{
-				nec_dev.edges[nec_dev.num_edges].ts = us_ticks - nec_dev.timestamp;
-				nec_dev.edges[nec_dev.num_edges].value = HAL_GPIO_ReadPin(nec_dev.p_gpio_handle.gpio_typedef, NEC_IN_Pin);
-				nec_dev.timestamp = us_ticks;
-				nec_dev.num_edges += 1;
+				p_nec_dev->edges[p_nec_dev->num_edges].ts = us_ticks - p_nec_dev->timestamp;
+				p_nec_dev->edges[p_nec_dev->num_edges].value = HAL_GPIO_ReadPin(p_nec_dev->gpio_port, p_nec_dev->gpio_pin_num);
+				p_nec_dev->timestamp = us_ticks;
+				p_nec_dev->num_edges += 1;
 			}
 			break;
 	}

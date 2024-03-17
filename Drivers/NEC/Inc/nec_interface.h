@@ -12,9 +12,6 @@ extern TIM_HandleTypeDef htim3;
 #define NEC_TIME_SOURCE					htim3
 
 #define NEC_GPIO_PIN					NEC_IN_Pin
-#define NEC_GPIO_MODE					GPIO_MODE_IT_RISING_FALLING
-#define NEC_GPIO_PULL					GPIO_NOPULL
-#define NEC_GPIO_SPEED					GPIO_SPEED_FREQ_LOW
 #define NEC_GPIO_PORT					NEC_IN_GPIO_Port
 
 #define NEC_BITS_PER_READ				32
@@ -40,6 +37,7 @@ extern TIM_HandleTypeDef htim3;
 
 typedef enum
 {
+	NEC_STATE_INIT,
 	NEC_STATE_IDLE,
 	NEC_STATE_PREAMBLE,
 	NEC_STATE_DATA
@@ -48,7 +46,8 @@ typedef enum
 typedef struct
 {
 	NEC_State_t								state;
-	HAL_GPIO_Handle_t  						p_gpio_handle;
+	uint16_t								gpio_pin_num;
+	GPIO_TypeDef							*gpio_port;
 	uint64_t								timestamp;
 	int32_t									num_edges;
 	struct { uint64_t ts; uint8_t value; }	edges[NEC_EDGES_PER_READ];
@@ -56,10 +55,11 @@ typedef struct
 	nec_frame_t								last_frame;
 } NEC_Device_t;
 
-void NEC_Dev_Initialize(void);
+void NEC_Dev_Initialize(NEC_Device_t *p_nec_dev);
 
 void NEC_Full_Frame_Received_Callback(NEC_Device_t *p_nec_dev);
 void NEC_Hold_Frame_Received_Callback(NEC_Device_t *p_nec_dev);
 void NEC_Decode_Error_Callback(NEC_Device_t *p_nec_dev);
+void NEC_Edge_Detected_Callback(NEC_Device_t *p_nec_dev);
 
 #endif /* NEC_INC_NEC_INTERFACE_H_ */

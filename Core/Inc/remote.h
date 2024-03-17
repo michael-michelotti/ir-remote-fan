@@ -30,14 +30,13 @@
 #define CHAR_CODE_3		0x5E
 
 #define char_code_t		uint8_t
-#define MAX_CHARS		4
 
 typedef enum
 {
 	REMOTE_STATE_INIT,
 	REMOTE_STATE_IDLE,
-	REMOTE_STATE_ERROR,
-	REMOTE_STATE_RECEIVING
+	REMOTE_STATE_RECEIVING,
+	REMOTE_STATE_ERROR
 } Remote_State_t;
 
 typedef struct

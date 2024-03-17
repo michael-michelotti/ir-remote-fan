@@ -4,11 +4,6 @@
 #include "l293d_driver.h"
 #include "stm32f4xx_hal.h"
 
-extern TIM_HandleTypeDef 	htim2;
-extern TIM_HandleTypeDef 	htim5;
-extern L293D_Handle_t 		l293d;
-extern HAL_GPIO_Handle_t	en_gpio_handle;
-
 #define fan_speed_t			uint8_t
 
 /* fan_speed_t macros to feed into Fan_Set_Speed. */
@@ -22,6 +17,8 @@ extern HAL_GPIO_Handle_t	en_gpio_handle;
 #define FAN_SPEED_7 		70
 #define FAN_SPEED_8			80
 #define FAN_SPEED_9			90
+
+
 
 typedef enum
 {

@@ -21,7 +21,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "l293d_driver.h"
 #include "remote.h"
 #include "fan.h"
 
@@ -48,9 +47,6 @@ TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim5;
 
 /* USER CODE BEGIN PV */
-L293D_Handle_t l293d;
-HAL_GPIO_Handle_t en_gpio_handle;
-
 Remote_Device_t remote;
 Fan_Device_t fan;
 
@@ -174,6 +170,7 @@ int main(void)
   }
   /* USER CODE END 3 */
 }
+
 
 /**
   * @brief System Clock Configuration
@@ -544,14 +541,6 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 
-  GPIO_InitStruct.Pin = L293D_EN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-
-  en_gpio_handle.gpio_init_typedef = GPIO_InitStruct;
-  en_gpio_handle.gpio_typedef = L293D_EN_GPIO_Port;
-  en_gpio_handle.curr_gpio_state = GPIO_PIN_RESET;
 
 /* USER CODE END MX_GPIO_Init_2 */
 }
