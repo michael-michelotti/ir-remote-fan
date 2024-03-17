@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "l293d_driver.h"
 #include "remote.h"
+#include "fan.h"
 
 /* USER CODE END Includes */
 
@@ -51,6 +52,7 @@ L293D_Handle_t l293d;
 HAL_GPIO_Handle_t en_gpio_handle;
 
 Remote_Device_t remote;
+Fan_Device_t fan;
 
 /* USER CODE END PV */
 
@@ -71,12 +73,54 @@ void Remote_Key_Press_Callback(char_code_t pressed_char)
 {
 	remote.last_char_code = pressed_char;
 	remote.last_char_str = Remote_Decode_Char_Code(remote.last_char_code);
-	printf("Pressed char: %s\n", remote.last_char_str);
+
+	switch (remote.last_char_code)
+	{
+	case CHAR_CODE_PWR:
+		if (fan.state == FAN_STATE_OFF)
+		{
+			Fan_On(&fan);
+		}
+		else
+		{
+			Fan_Off(&fan);
+		}
+		break;
+	case CHAR_CODE_0:
+		Fan_Set_Speed(&fan, FAN_SPEED_0);
+		break;
+	case CHAR_CODE_1:
+		Fan_Set_Speed(&fan, FAN_SPEED_1);
+		break;
+	case CHAR_CODE_2:
+		Fan_Set_Speed(&fan, FAN_SPEED_2);
+		break;
+	case CHAR_CODE_3:
+		Fan_Set_Speed(&fan, FAN_SPEED_3);
+		break;
+	case CHAR_CODE_4:
+		Fan_Set_Speed(&fan, FAN_SPEED_4);
+		break;
+	case CHAR_CODE_5:
+		Fan_Set_Speed(&fan, FAN_SPEED_5);
+		break;
+	case CHAR_CODE_6:
+		Fan_Set_Speed(&fan, FAN_SPEED_6);
+		break;
+	case CHAR_CODE_7:
+		Fan_Set_Speed(&fan, FAN_SPEED_7);
+		break;
+	case CHAR_CODE_8:
+		Fan_Set_Speed(&fan, FAN_SPEED_8);
+		break;
+	case CHAR_CODE_9:
+		Fan_Set_Speed(&fan, FAN_SPEED_9);
+		break;
+	}
 }
 
 void Remote_Key_Hold_Callback()
 {
-	printf("Held char: %s\n", remote.last_char_str);
 }
 
 /* USER CODE END 0 */
@@ -114,27 +158,9 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-  /*
-  l293d.state = L293D_DISABLED;
-  l293d.in1_pwm = &htim2;
-  l293d.in2_pwm = &htim5;
-  l293d.en_gpio = &en_gpio_handle;
-
-  L293D_Set_Direction_CCW(&l293d);
-  L293D_Set_PWM_Duty_Cycle(&l293d, 50);
-  L293D_Enable(&l293d);
-
-  HAL_Delay(10000);
-  L293D_Set_Direction_CW(&l293d);
-  HAL_Delay(10000);
-  L293D_Set_PWM_Duty_Cycle(&l293d, 90);
-  HAL_Delay(10000);
-  L293D_Set_PWM_Duty_Cycle(&l293d, 30);
-  HAL_Delay(10000);
-  L293D_Disable(&l293d);
-  */
-
   Remote_Listen(&remote);
+  Fan_Initialize(&fan);
+
   /* USER CODE END 2 */
 
 

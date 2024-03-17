@@ -31,27 +31,27 @@ const char *Remote_Decode_Char_Code(char_code_t char_to_decode)
 {
 	switch (char_to_decode)
 	{
-	case 0x7: return "DOWN";
-	case 0x8: return "4";
-	case 0x9: return "UP";
-	case 0xC: return "1";
-	case 0xD: return "ST";
-	case 0x15: return "VOL-";
-	case 0x16: return "0";
-	case 0x18: return "2";
-	case 0x19: return "EQ";
-	case 0x1C: return "5";
-	case 0x40: return "PLAY";
-	case 0x42: return "7";
-	case 0x43: return ">>";
-	case 0x44: return "<<";
-	case 0x45: return "PWR";
-	case 0x46: return "VOL+";
-	case 0x47: return "FUNC";
-	case 0x4A: return "9";
-	case 0x52: return "8";
-	case 0x5A: return "6";
-	case 0x5E: return "3";
+	case CHAR_CODE_DOWN: return "DOWN";
+	case CHAR_CODE_4: return "4";
+	case CHAR_CODE_UP: return "UP";
+	case CHAR_CODE_1: return "1";
+	case CHAR_CODE_ST: return "ST";
+	case CHAR_CODE_VOLM: return "VOL-";
+	case CHAR_CODE_0: return "0";
+	case CHAR_CODE_2: return "2";
+	case CHAR_CODE_EQ: return "EQ";
+	case CHAR_CODE_5: return "5";
+	case CHAR_CODE_PLAY: return "PLAY";
+	case CHAR_CODE_7: return "7";
+	case CHAR_CODE_FFW: return ">>";
+	case CHAR_CODE_REW: return "<<";
+	case CHAR_CODE_PWR: return "PWR";
+	case CHAR_CODE_VOLP: return "VOL+";
+	case CHAR_CODE_FUNC: return "FUNC";
+	case CHAR_CODE_9: return "9";
+	case CHAR_CODE_8: return "8";
+	case CHAR_CODE_6: return "6";
+	case CHAR_CODE_3: return "3";
 
 	}
 }
