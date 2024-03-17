@@ -50,6 +50,8 @@ TIM_HandleTypeDef htim5;
 L293D_Handle_t l293d;
 HAL_GPIO_Handle_t en_gpio_handle;
 
+NEC_Device_t nec_dev;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
