@@ -57,8 +57,10 @@ I don't necessarily expect that anybody will be building this project in their l
 * [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
 
 ## Setup
-***TODO: Schematic Image Here***
-#### Power, Code Flashing
+### Schematic
+![IR remote fan scheamtic](https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/IR_Remote_Schematic.png?raw=true)
+
+#### Flashing Code
 The STM32F4 discovery board is hooked up to my host PC via USB. Over that interface, I'm able to flash the board from STM32CubeIDE using ST-Link. 
 
 #### Power Distribution, Ground
