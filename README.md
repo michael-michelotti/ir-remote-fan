@@ -1,6 +1,10 @@
 # IR Remote Fan
 A [STM32F407G-DISC1](https://www.st.com/en/evaluation-tools/stm32f4discovery.html) development board receives signals from a [TSOP1838 IR Receiver module](https://hobbyking.com/en_us/keyes-tsop1838-infra-red-37-9khz-receiver-for-arduino.html). That signal is processed to determine how to drive a DC fan with a PWM siganl through a [L293D push-pull driver](https://www.ti.com/product/L293D).
 
+<div align="center">
+  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/IR_Remote_Fan_Demo.gif?raw=true" alt="IR remote fan project demo gif" width="500" />
+</div>
+
 ## Table of Contents
 1. [About the Project](#about-the-project)
 2. [Getting Started](#getting-started)
