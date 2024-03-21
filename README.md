@@ -26,22 +26,22 @@ I don't necessarily expect that anybody will be building this project in their l
 ### Hardware I Used
 * [STM32F407G-DISC1 Microcontroller](https://www.st.com/en/evaluation-tools/stm32f4discovery.html).
 <div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/tree/main/Img/stm32f4-disc1-board.jpg" alt="Demo usage of STM32 LCD clock" width="300"/>
+  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/stm32f4-disc1-board.jpg?raw=true" alt="STM32F4-DISC1 development board" width="300"/>
 </div>
 
 * [TSOP1838 IR Receiver Module]([https://i.ebayimg.com/images/g/Hw4AAOSwgSFh3YuZ/s-l1600.jpg](https://quagmirerepair.com/tsop1838-38khz-ir-receiver-sensor-module-2-5-5-5vdc.html)).
 <div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/tree/main/Img/TSOP1838_IR_Receiver.jpg" alt="TSOP1838 IR receiver" width="300"/>
+  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/TSOP1838_IR_Receiver.jpg?raw=true" alt="TSOP1838 IR receiver" width="300"/>
 </div>
 
 * [Elegoo IR Remote](https://myenterprised.com/mods/model-remodel/arduino/remote-control/).
 <div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/tree/main/Img/Elegoo_IR_Remote.jpg" alt="Demo usage of STM32 LCD clock" width="300"/>
+  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/Elegoo_IR_Remote.jpg?raw=true" alt="Elegoo IR remote" width="300"/>
 </div>
 
 * [L293D Push-Pull Driver](https://www.st.com/en/motor-drivers/l293d.html).
 <div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/tree/main/Img/L293D_Push_Pull_Driver.jpg" alt="Demo usage of STM32 LCD clock" width="300"/>
+  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/L293D_Push_Pull_Driver.jpg?raw=true" alt="L293D push pull driver" width="300"/>
 </div>
 
 * DC Fan.
