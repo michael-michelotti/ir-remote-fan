@@ -2,7 +2,7 @@
 
 /* Private counter variable for NEC devices - counts in us. */
 /* Triggers off TIM3, which is configured to produce an interrupt every 10us. */
-uint64_t us_ticks;
+static uint64_t us_ticks;
 
 
 static uint32_t NEC_Decode(NEC_Device_t *p_nec_dev);

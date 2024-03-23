@@ -127,6 +127,7 @@ void Remote_Key_Hold_Callback()
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
