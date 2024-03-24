@@ -1,9 +1,7 @@
 # IR Remote Fan
 A [STM32F407G-DISC1](https://www.st.com/en/evaluation-tools/stm32f4discovery.html) development board receives signals from a [TSOP1838 IR Receiver module](https://hobbyking.com/en_us/keyes-tsop1838-infra-red-37-9khz-receiver-for-arduino.html). That signal is processed to determine how to drive a DC fan with a PWM siganl through a [L293D push-pull driver](https://www.ti.com/product/L293D).
 
-<div align="center">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/IR_Remote_Fan_Demo.gif?raw=true" alt="IR remote fan project demo gif" width="500" />
-</div>
+![IR remote fan project demo gif](Img/IR_Remote_Fan_Demo.gif)
 
 ## Table of Contents
 1. [About the Project](#about-the-project)
@@ -26,26 +24,11 @@ For #3, I designed this project using CubeMX. The CubeMX configuration can be fo
 
 ## Getting Started
 ### Required Hardware
-* [STM32F407G-DISC1 Microcontroller](https://www.st.com/en/evaluation-tools/stm32f4discovery.html).
-<div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/stm32f4-disc1-board.jpg?raw=true" alt="STM32F4-DISC1 development board" width="300"/>
-</div>
-
-* [TSOP1838 IR Receiver Module]([https://i.ebayimg.com/images/g/Hw4AAOSwgSFh3YuZ/s-l1600.jpg](https://quagmirerepair.com/tsop1838-38khz-ir-receiver-sensor-module-2-5-5-5vdc.html)).
-<div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/TSOP1838_IR_Receiver.jpg?raw=true" alt="TSOP1838 IR receiver" width="300"/>
-</div>
-
-* [Elegoo IR Remote](https://myenterprised.com/mods/model-remodel/arduino/remote-control/).
-<div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/Elegoo_IR_Remote.jpg?raw=true" alt="Elegoo IR remote" width="300"/>
-</div>
-
-* [L293D Push-Pull Driver](https://www.st.com/en/motor-drivers/l293d.html).
-<div align="left">
-  <img src="https://github.com/michael-michelotti/ir-remote-fan/blob/main/Img/L293D_Push_Pull_Driver.jpg?raw=true" alt="L293D push pull driver" width="300"/>
-</div>
-
+* __STM32F407G-DISC1 Microcontroller__ - The main development board used for this project. [View product.](https://www.st.com/en/evaluation-tools/stm32f4discovery.html)
+* __TSOP1838 IR Receiver Module__ - Receives NEC IR signal from the remote. [View product.](https://quagmirerepair.com/tsop1838-38khz-ir-receiver-sensor-module-2-5-5-5vdc.html)
+* __Elegoo IR Remote__ - The IR remote control. [View product.](https://myenterprised.com/mods/model-remodel/arduino/remote-control/)
+* __L293D Push-Pull Driver__ - Drives the DC motor. [View product.](https://www.st.com/en/motor-drivers/l293d.html)
+* __3.3V LDO regulator__ - Regulates 5V rail to create 3.3V rail for logic. [View product.](https://www.st.com/en/motor-drivers/l293d.html)
 * DC Fan.
 * USB Micro-AB to USB A cable.
   * Connects the discovery board to your host PC via ST-Link.
@@ -53,13 +36,12 @@ For #3, I designed this project using CubeMX. The CubeMX configuration can be fo
 * Jumper Cables (M-M, M-F).
 * Two (2) 100nF, one (1) 100uF, one (1) 4.7uF, bypass capacitors.
 * 5V wall wart and breadboard barrel jack adapter.
-* 3.3V LDO regulator.
 
 ### Schematic
 You can find a schematic at `Img/IR_Remote_Schematic.png`.
 
 ### Required Software
-* [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) (v. 15.1)
+* __STM32CubeIDE (v. 15.1)__ - The IDE used for development. [Download](https://www.st.com/en/development-tools/stm32cubeide.html).
 
 ## Installation
 1. Clone the repository:
