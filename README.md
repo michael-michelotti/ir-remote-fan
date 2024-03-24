@@ -89,4 +89,5 @@ The driver is designed to feed the `NEC_Device_t` object into one of several cal
 These callbacks are externally exposed, so all any consumer of this driver must do is create a local instance of `NEC_Device_t`, initialize it, then implement these callbacks. In this case, the NEC driver consumer is the IR remote, so the callbacks are implemented in `Core/Src/remote.c`. 
 
 ## Future Improvements
-Reserved.
+### LCD GUI
+A 16x2 LCD could be used to communicate the current state of the fan, confirm receipt of button presses, etc.
